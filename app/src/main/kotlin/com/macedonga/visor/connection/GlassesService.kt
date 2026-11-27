@@ -199,6 +199,8 @@ class GlassesService : Service() {
             }
         } else if (intent?.action == ACTION_RECONNECT) {
             retry()
+        } else if (intent?.action == ACTION_RELOAD) {
+            reload(targetFrom(intent))
         } else {
             targetFrom(intent)?.let(::switchTo)
         }
@@ -211,6 +213,12 @@ class GlassesService : Service() {
         if (live.usingWifi || media.importing.value) return
         // Asked twice in a row, the second finds this pair already chosen.
         scope.launch { connection.restart(scope, target) { it.target?.serial == target.serial } }
+    }
+
+    /** Restarts the session from the store after a backup restores or replaces keys. */
+    private fun reload(target: GlassesTarget?) {
+        if (live.usingWifi || media.importing.value) return
+        scope.launch { connection.restart(scope, target) }
     }
 
     /** [reconnect]: a waiting pair is tried now, unless a new session would end the Live's or an import's on Wi-Fi. */
@@ -375,6 +383,7 @@ class GlassesService : Service() {
         const val NOTIFICATION_ID = 1
         const val ACTION_STOP_LIVE = "com.macedonga.visor.action.STOP_LIVE"
         const val ACTION_RECONNECT = "com.macedonga.visor.action.RECONNECT"
+        const val ACTION_RELOAD = "com.macedonga.visor.action.RELOAD"
 
         const val EXTRA_ADDRESS = "com.macedonga.visor.extra.ADDRESS"
         const val EXTRA_SERIAL = "com.macedonga.visor.extra.SERIAL"
@@ -420,6 +429,15 @@ class GlassesService : Service() {
             stoppedByUser = false
             if (!bluetoothAllowed(context)) return
             context.startForegroundService(Intent(context, GlassesService::class.java).setAction(ACTION_RECONNECT))
+        }
+
+        /** Start the service, or restart its session so newly restored keys take effect. */
+        fun reload(context: Context, target: GlassesTarget? = null) {
+            stoppedByUser = false
+            if (!bluetoothAllowed(context)) return
+            val intent = Intent(context, GlassesService::class.java).setAction(ACTION_RELOAD)
+            if (target != null) (target.link as? GlassesLink.Bluetooth)?.let { intent.putExtra(EXTRA_SERIAL, target.serial).putExtra(EXTRA_ADDRESS, it.address) }
+            context.startForegroundService(intent)
         }
 
         // Checked before a foreground start: a service that stops before startForeground crashes the app.

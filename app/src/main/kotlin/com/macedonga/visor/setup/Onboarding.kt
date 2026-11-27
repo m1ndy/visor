@@ -352,6 +352,7 @@ fun OnboardingScreen(
     login: Boolean,
     address: String? = null,
     onLogin: () -> Unit,
+    onRestore: () -> Unit = {},
     onEventLog: () -> Unit,
     onDone: (GlassesTarget) -> Unit,
     onLeave: () -> Unit,
@@ -473,7 +474,7 @@ fun OnboardingScreen(
             val contentTop = with(density) { shown.placement(heightPx, topPx, stagePx).contentTop.toDp() }
             val frame = Modifier.fillMaxSize().padding(top = top, bottom = bottom + 20.dp).padding(horizontal = 24.dp).padding(top = contentTop)
             when (shown) {
-                Page.WELCOME -> WelcomePage(welcome, frame, before = { if (withMark) stage.intro.awaitLetGo() }) { model.next() }
+                Page.WELCOME -> WelcomePage(welcome, frame, before = { if (withMark) stage.intro.awaitLetGo() }, onBegin = { model.next() }, onRestore = onRestore)
                 Page.ACCESS -> AccessPage(model, accessTick, { accessTick++ }, frame)
                 Page.LOGIN -> LoginPage(model, onLogin, onEventLog, frame)
                 Page.PAIRING -> PairingPage(model, story.clock, frame)
@@ -566,7 +567,7 @@ private fun Page.placement(heightPx: Float, topPx: Float, stagePx: Float): Place
 
 /** The welcome: after [before], the pair comes up out of the dark and opens, then the words. */
 @Composable
-private fun WelcomePage(firstRun: Boolean, modifier: Modifier, before: suspend () -> Unit, onBegin: () -> Unit) {
+private fun WelcomePage(firstRun: Boolean, modifier: Modifier, before: suspend () -> Unit, onBegin: () -> Unit, onRestore: () -> Unit) {
     val rise = remember { Animatable(if (firstRun) 0f else 1f) }
     LaunchedEffect(Unit) {
         before()
@@ -578,6 +579,8 @@ private fun WelcomePage(firstRun: Boolean, modifier: Modifier, before: suspend (
             Text(stringResource(R.string.app_name), style = Visor.type.display, color = Visor.colors.textPrimary, modifier = Modifier.asHeading())
             Spacer(Modifier.height(36.dp))
             WidePill(stringResource(R.string.onboard_begin), onBegin, Modifier.fillMaxWidth())
+            Spacer(Modifier.height(12.dp))
+            WidePill(stringResource(R.string.onboard_restore), onRestore, Modifier.fillMaxWidth(), quiet = true)
         }
     }
 }

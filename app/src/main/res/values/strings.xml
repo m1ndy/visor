@@ -385,7 +385,7 @@
     <string name="search_words_hearing">conversation focus,focus,hearing correction,hearing aid,group conversation</string>
     <string name="search_words_memories">memor,remember</string>
     <string name="search_words_mcp">mcp,integra,tool,connector,server</string>
-    <string name="search_words_backup">export,import,restore</string>
+    <string name="search_words_backup">export,import,restore,keys,encrypt,passphrase,credentials</string>
     <string name="search_words_flags">flag,mobileconfig,gate</string>
     <string name="search_words_diagnostics">diagnos,link,verdict</string>
     <string name="search_words_event_log">log,events</string>
@@ -815,9 +815,40 @@
         <item quantity="other">%1$d glasses settings not restored</item>
     </plurals>
     <string name="backup_visor_only">Visor only</string>
+    <string name="backup_encrypted">Encrypted</string>
+    <string name="backup_include_keys">Include keys and accounts</string>
+    <string name="backup_include_keys_off">Off by default. Excludes glasses keys, logins, API keys and tokens.</string>
+    <string name="backup_include_keys_on">Encrypted with a passphrase. Includes glasses keys, logins, API keys and tokens.</string>
+    <string name="backup_keys_warning_inline">Anyone with this file and its passphrase can access your glasses, Meta login and API keys.</string>
+    <string name="backup_keys_warn_title">Include keys and accounts?</string>
+    <string name="backup_keys_warn_intro">This backup will be encrypted with a passphrase you choose and will contain:</string>
+    <string name="backup_keys_warn_items">• Glasses, Neural Band and toolkit private keys\n• Meta login session\n• AI provider API keys, cloud voice key and ChatGPT sign-in\n• MCP integration credentials and OAuth tokens\n• RTMP stream key, Spotify credentials and Developer / VDK tokens</string>
+    <string name="backup_keys_warn_risk">Anyone with the file and passphrase can control your glasses and use these accounts. Keep the file safe and delete it after moving to another phone.</string>
+    <string name="backup_keys_warn_confirm">Include keys</string>
+    <string name="backup_encrypt_title">Encrypt backup</string>
+    <string name="backup_encrypt_text">Choose a passphrase to lock this backup. You will need it to restore — it cannot be recovered.</string>
+    <string name="backup_passphrase_hint">Passphrase (at least %1$d characters)</string>
+    <string name="backup_passphrase_confirm_hint">Confirm passphrase</string>
+    <string name="backup_passphrase_short">Use at least %1$d characters</string>
+    <string name="backup_passphrase_mismatch">Passphrases do not match</string>
+    <string name="backup_show_passphrase">Show passphrase</string>
+    <string name="backup_hide_passphrase">Hide passphrase</string>
+    <string name="backup_decrypt_title">Encrypted backup</string>
+    <string name="backup_decrypt_text">Enter the passphrase to unlock this backup.</string>
+    <string name="backup_decrypt_text_dated">Saved %1$s. Enter the passphrase to unlock it.</string>
+    <string name="backup_passphrase_enter_hint">Passphrase</string>
+    <string name="backup_unlock">Unlock</string>
+    <string name="backup_wrong_passphrase">Wrong passphrase or damaged backup</string>
+    <string name="backup_restored_with_keys">Restored with keys and accounts</string>
+    <string name="backup_restored_pair_hint">Keys restored. Pair your glasses in Android Bluetooth settings to connect without resetting them.</string>
     <string name="backup_restore_title">Restore the backup of %1$s?</string>
     <string name="backup_restore_text">Visor\'s settings and %1$d on the glasses.</string>
     <string name="backup_restore_away">Visor\'s settings only. Connect the glasses and restore again for their %1$d.</string>
+    <string name="backup_restore_keys_only">Visor\'s settings, saved logins, API keys and tokens will be restored.</string>
+    <plurals name="backup_restore_keys_pairs">
+        <item quantity="one">Visor\'s settings, keys for %1$d pair of glasses, saved logins, API keys and tokens will be restored.</item>
+        <item quantity="other">Visor\'s settings, keys for %1$d pairs of glasses, saved logins, API keys and tokens will be restored.</item>
+    </plurals>
 
     <string name="about_title">About</string>
     <string name="about_sum" translatable="false">Visor %1$s</string>
@@ -846,6 +877,7 @@
 
     <!-- Onboarding -->
     <string name="onboard_begin">Begin</string>
+    <string name="onboard_restore">Restore from a backup</string>
     <string name="onboard_access_title">What Visor asks for</string>
     <string name="onboard_skip">Not now</string>
     <string name="onboard_continue">Continue</string>

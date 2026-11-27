@@ -134,6 +134,31 @@ class AssistantConfigStore(context: Context) {
         }
     }
 
+    /** Every provider's saved key and models, including the active one, for an encrypted backup. */
+    fun exportSlots(): JSONObject {
+        val slots = runCatching { JSONObject(prefs.getString(SLOTS, null) ?: "{}") }.getOrDefault(JSONObject())
+        val c = _config.value
+        slots.put(c.provider.name, JSONObject().put("key", c.apiKey).put("model", c.model).put("lines", c.linesModel))
+        return slots
+    }
+
+    /** Merges saved provider slots from an encrypted backup. */
+    fun importSlots(incoming: JSONObject) {
+        val slots = runCatching { JSONObject(prefs.getString(SLOTS, null) ?: "{}") }.getOrDefault(JSONObject())
+        for (name in incoming.keys()) {
+            val o = incoming.optJSONObject(name) ?: continue
+            if (Provider.entries.none { it.name == name }) continue
+            slots.put(
+                name,
+                JSONObject()
+                    .put("key", o.optString("key"))
+                    .put("model", o.optString("model"))
+                    .put("lines", o.optString("lines")),
+            )
+        }
+        prefs.edit().putString(SLOTS, slots.toString()).apply()
+    }
+
     fun update(change: (AssistantConfig) -> AssistantConfig) {
         val before = _config.value
         val next = change(before)

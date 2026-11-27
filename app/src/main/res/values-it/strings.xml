@@ -383,7 +383,7 @@
     <string name="search_words_hearing">conversation focus,focus,hearing correction,hearing aid,group conversation,udito,conversazion,apparecchio</string>
     <string name="search_words_memories">memor,remember,ricord</string>
     <string name="search_words_mcp">mcp,integra,tool,strument,connector,server</string>
-    <string name="search_words_backup">export,esporta,import,restore,ripristina</string>
+    <string name="search_words_backup">export,esporta,import,restore,ripristina,chiavi,crittografa,passphrase,credenziali</string>
     <string name="search_words_flags">flag,mobileconfig,gate</string>
     <string name="search_words_diagnostics">diagnos,link,verdict</string>
     <string name="search_words_event_log">log,events,eventi</string>
@@ -811,9 +811,40 @@
         <item quantity="other">%1$d impostazioni degli occhiali non ripristinate</item>
     </plurals>
     <string name="backup_visor_only">Solo Visor</string>
+    <string name="backup_encrypted">Crittografato</string>
+    <string name="backup_include_keys">Includi chiavi e account</string>
+    <string name="backup_include_keys_off">Disattivo per impostazione predefinita. Esclude chiavi degli occhiali, accessi, chiavi API e token.</string>
+    <string name="backup_include_keys_on">Crittografato con una passphrase. Include chiavi degli occhiali, accessi, chiavi API e token.</string>
+    <string name="backup_keys_warning_inline">Chiunque abbia questo file e la sua passphrase può accedere agli occhiali, all\'account Meta e alle chiavi API.</string>
+    <string name="backup_keys_warn_title">Includere chiavi e account?</string>
+    <string name="backup_keys_warn_intro">Questo backup sarà crittografato con una passphrase scelta da te e conterrà:</string>
+    <string name="backup_keys_warn_items">• Chiavi private degli occhiali, della Neural Band e del toolkit\n• Sessione di accesso a Meta\n• Chiavi API dell\'assistente, della voce cloud e accesso a ChatGPT\n• Credenziali e token OAuth delle integrazioni MCP\n• Chiave stream RTMP, credenziali Spotify e token sviluppatore / VDK</string>
+    <string name="backup_keys_warn_risk">Chiunque abbia il file e la passphrase può controllare gli occhiali e usare questi account. Custodiscilo con cura ed eliminalo dopo il trasferimento sul nuovo telefono.</string>
+    <string name="backup_keys_warn_confirm">Includi chiavi</string>
+    <string name="backup_encrypt_title">Crittografa il backup</string>
+    <string name="backup_encrypt_text">Scegli una passphrase per proteggere questo backup. Ti servirà per ripristinarlo e non può essere recuperata.</string>
+    <string name="backup_passphrase_hint">Passphrase (almeno %1$d caratteri)</string>
+    <string name="backup_passphrase_confirm_hint">Conferma passphrase</string>
+    <string name="backup_passphrase_short">Usa almeno %1$d caratteri</string>
+    <string name="backup_passphrase_mismatch">Le passphrase non corrispondono</string>
+    <string name="backup_show_passphrase">Mostra passphrase</string>
+    <string name="backup_hide_passphrase">Nascondi passphrase</string>
+    <string name="backup_decrypt_title">Backup crittografato</string>
+    <string name="backup_decrypt_text">Inserisci la passphrase per sbloccare questo backup.</string>
+    <string name="backup_decrypt_text_dated">Salvato il %1$s. Inserisci la passphrase per sbloccarlo.</string>
+    <string name="backup_passphrase_enter_hint">Passphrase</string>
+    <string name="backup_unlock">Sblocca</string>
+    <string name="backup_wrong_passphrase">Passphrase errata o backup danneggiato</string>
+    <string name="backup_restored_with_keys">Ripristinato con chiavi e account</string>
+    <string name="backup_restored_pair_hint">Chiavi ripristinate. Abbina gli occhiali nelle impostazioni Bluetooth di Android per collegarli senza ripristinarli.</string>
     <string name="backup_restore_title">Ripristinare il backup del %1$s?</string>
     <string name="backup_restore_text">Le impostazioni di Visor e %1$d sugli occhiali.</string>
     <string name="backup_restore_away">Solo le impostazioni di Visor. Collega gli occhiali e ripristina di nuovo per le loro %1$d.</string>
+    <string name="backup_restore_keys_only">Verranno ripristinati impostazioni di Visor, accessi, chiavi API e token.</string>
+    <plurals name="backup_restore_keys_pairs">
+        <item quantity="one">Verranno ripristinati impostazioni di Visor, chiavi per %1$d paio di occhiali, accessi, chiavi API e token.</item>
+        <item quantity="other">Verranno ripristinati impostazioni di Visor, chiavi per %1$d paia di occhiali, accessi, chiavi API e token.</item>
+    </plurals>
 
     <string name="about_title">Informazioni</string>
     <string name="about_debug">Build di debug</string>
@@ -841,6 +872,7 @@
 
     <!-- Onboarding -->
     <string name="onboard_begin">Inizia</string>
+    <string name="onboard_restore">Ripristina da un backup</string>
     <string name="onboard_access_title">Cosa chiede Visor</string>
     <string name="onboard_skip">Non ora</string>
     <string name="onboard_continue">Continua</string>

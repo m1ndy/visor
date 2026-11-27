@@ -103,6 +103,17 @@ class NetworkClients @Inject constructor(@ApplicationContext context: Context) {
         write()
     }
 
+    /** Restores switches and merges [clients] by name from an encrypted backup. */
+    @Synchronized
+    fun restore(on: Boolean, lan: Boolean, clients: List<NetworkClient>) {
+        setOn(on)
+        setLan(lan)
+        if (clients.isEmpty()) return
+        val incoming = clients.map { it.name }.toSet()
+        _all.value = _all.value.filter { it.name !in incoming } + clients
+        write()
+    }
+
     /** The client whose token is [token], or null. */
     fun byToken(token: String): NetworkClient? {
         val given = hash(token).toByteArray()
