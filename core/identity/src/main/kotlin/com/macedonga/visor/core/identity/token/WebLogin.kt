@@ -95,6 +95,9 @@ class WebLoginSource(private val cacheFile: File, private val sealer: KeystoreSe
         writeCache(frla)
     }
 
+    /** The cached FRLA, or null when not logged in or unreadable. */
+    fun cachedToken(): String? = readCache()
+
     /** Forget the cached login. */
     fun logOut() {
         token = null

@@ -159,7 +159,7 @@ data object AdvancedKey : NavKey
 data object AppsKey : NavKey
 
 @Serializable
-data object BackupKey : NavKey
+data class BackupKey(val onboarding: Boolean = false) : NavKey
 
 @Serializable
 data object AboutKey : NavKey
@@ -267,6 +267,7 @@ fun VisorNav(opens: Flow<String>, markAtLaunch: Boolean) {
                             login = key.login,
                             address = key.address,
                             onLogin = { backStack.add(LoginKey) },
+                            onRestore = { backStack.add(BackupKey(onboarding = true)) },
                             onEventLog = { backStack.add(EventLogKey) },
                             onDone = { target ->
                                 onboarded(context)
@@ -289,7 +290,16 @@ fun VisorNav(opens: Flow<String>, markAtLaunch: Boolean) {
                     entry<AppsKey> { AppsScreen() }
                     entry<SettingsGroupKey> { SettingsGroupScreen(it.group) }
                     entry<GlassesKey> { GlassesPage(open) }
-                    entry<BackupKey> { BackupScreen() }
+                    entry<BackupKey> { key ->
+                        BackupScreen(
+                            onboarding = key.onboarding,
+                            onContinue = {
+                                onboarded(context)
+                                backStack.retainAll { it == HomeKey }
+                                if (backStack.isEmpty()) backStack.add(HomeKey)
+                            },
+                        )
+                    }
                     entry<AboutKey> { AboutScreen() }
                     entry<PhoneAccessKey> { PhoneAccessScreen() }
                     entry<NotifyAppsKey> { NotifyAppsScreen() }

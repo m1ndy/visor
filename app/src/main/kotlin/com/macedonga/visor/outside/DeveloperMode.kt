@@ -112,6 +112,14 @@ class DeveloperMode @Inject constructor(
         if (on.value) open(true)
     }
 
+    /** Restores a saved developer token from an encrypted backup. */
+    fun restoreToken(value: String) {
+        if (value.isBlank()) return
+        prefs.edit().putString(TOKEN, value).apply()
+        _token.value = value
+        if (on.value) open(true)
+    }
+
     /** Whether [given] is the token. */
     fun holds(given: String?): Boolean = given != null && MessageDigest.isEqual(given.toByteArray(), token.value.toByteArray())
 

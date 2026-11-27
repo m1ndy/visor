@@ -223,6 +223,52 @@ class ChatGptPlan(context: Context, private val store: AssistantConfigStore) {
         store.update { it.copy(chatGpt = "") }
     }
 
+    /** The ChatGPT plan registration and tokens for an encrypted backup, or null when never set up. */
+    fun exportState(): JSONObject? {
+        val client = prefs.getString(CLIENT, null).orEmpty()
+        val access = prefs.getString(ACCESS, null).orEmpty()
+        val refresh = prefs.getString(REFRESH, null).orEmpty()
+        if (client.isEmpty() && access.isEmpty() && refresh.isEmpty()) return null
+        return JSONObject()
+            .put(HOST, prefs.getString(HOST, null).orEmpty())
+            .put(CLIENT, client)
+            .put(ACCESS, access)
+            .put(REFRESH, refresh)
+            .put(EXPIRES, prefs.getLong(EXPIRES, 0L))
+            .put(ID_TOKEN, prefs.getString(ID_TOKEN, null).orEmpty())
+            .put(EMAIL, prefs.getString(EMAIL, null).orEmpty())
+            .put(NOTE, prefs.getBoolean(NOTE, false))
+    }
+
+    /** Restores ChatGPT plan registration and tokens from an encrypted backup. */
+    fun importState(o: JSONObject) {
+        cancel()
+        val editor = prefs.edit()
+        fun keepStr(key: String) {
+            val v = o.optString(key)
+            if (v.isNotEmpty()) editor.putString(key, v)
+        }
+        keepStr(HOST)
+        keepStr(CLIENT)
+        keepStr(ACCESS)
+        keepStr(REFRESH)
+        keepStr(ID_TOKEN)
+        keepStr(EMAIL)
+        if (o.has(EXPIRES)) editor.putLong(EXPIRES, o.optLong(EXPIRES, 0L))
+        if (o.has(NOTE)) {
+            val shown = o.optBoolean(NOTE, false)
+            editor.putBoolean(NOTE, shown)
+            _noteShown.value = shown
+        }
+        editor.apply()
+        _limited.value = false
+        _notShared.value = false
+        val email = o.optString(EMAIL)
+        if (o.optString(ACCESS).isNotEmpty() && email.isNotEmpty()) {
+            store.update { it.copy(chatGpt = email) }
+        }
+    }
+
     /** The models the plan offers to this account, in the plan's order. */
     suspend fun models(): List<ModelInfo> = withContext(Dispatchers.IO) {
         val http = URL("$OPENAI_API/models").openConnection() as HttpURLConnection

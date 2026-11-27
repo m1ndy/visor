@@ -173,10 +173,36 @@ class MetaLogin @Inject constructor(
         fun traceFile(context: Context): File = File(context.filesDir, "bloks-trace.log")
     }
 
+    @Volatile
+    private var cachedDeviceId: String? = null
+
     /** One id per install, as the Meta app keeps its `device_id`: the login's server state is tied to it. */
-    val deviceId: String by lazy {
-        val prefs = context.getSharedPreferences("meta_login", Context.MODE_PRIVATE)
-        prefs.getString("device_id", null) ?: UUID.randomUUID().toString().also { prefs.edit().putString("device_id", it).apply() }
+    val deviceId: String
+        get() = cachedDeviceId ?: synchronized(this) {
+            cachedDeviceId ?: run {
+                val prefs = context.getSharedPreferences("meta_login", Context.MODE_PRIVATE)
+                (prefs.getString("device_id", null) ?: UUID.randomUUID().toString().also { prefs.edit().putString("device_id", it).apply() })
+                    .also { cachedDeviceId = it }
+            }
+        }
+
+    /** The cached FRLA and its device id for an encrypted backup, or null when logged out. */
+    fun exportLogin(): Pair<String, String>? {
+        val frla = source.cachedToken() ?: return null
+        return frla to deviceId
+    }
+
+    /** Restores a cached Meta login from an encrypted backup, resealing it under this phone's keystore. */
+    fun restoreLogin(frla: String, deviceId: String?) {
+        if (!deviceId.isNullOrBlank()) {
+            synchronized(this) {
+                context.getSharedPreferences("meta_login", Context.MODE_PRIVATE).edit().putString("device_id", deviceId).apply()
+                cachedDeviceId = deviceId
+            }
+        }
+        source.finishToken(frla)
+        _status.value = Status.LoggedIn
+        log.add("Login: restored Meta login from backup")
     }
 
     /** Forget the cached login. */

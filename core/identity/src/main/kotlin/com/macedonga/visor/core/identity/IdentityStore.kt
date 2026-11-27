@@ -65,6 +65,17 @@ class IdentityStore(directory: File, private val sealer: KeystoreSealer) {
         if (currentSerial() == serial) currentPath.delete()
     }
 
+    /** Merge [bundles] by serial and reseal under this phone's keystore; an unreadable store is replaced. */
+    @Synchronized
+    fun importAll(bundles: List<IdentityBundle>, current: String? = null) {
+        if (bundles.isEmpty()) return
+        val existing = runCatching { all() }.getOrDefault(emptyList())
+        val incoming = bundles.map { it.serial }.toSet()
+        write(existing.filter { it.serial !in incoming } + bundles)
+        val serial = current?.takeIf { it.isNotEmpty() } ?: bundles.lastOrNull()?.serial
+        if (serial != null) choose(serial)
+    }
+
     private fun write(bundles: List<IdentityBundle>) {
         directory.mkdirs()
         writeAtomically(sealer.seal(bundlesToJson(bundles).toByteArray(Charsets.UTF_8)))

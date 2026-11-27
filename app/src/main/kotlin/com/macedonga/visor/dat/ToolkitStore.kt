@@ -97,6 +97,24 @@ class ToolkitStore @Inject constructor(@ApplicationContext context: Context) {
         write(json.put("pairs", pairs))
     }
 
+    /** The unsealed toolkit state for an encrypted backup, or null when none is saved. */
+    @Synchronized
+    fun exportState(): JSONObject? = if (file.exists()) runCatching { read() }.getOrNull() else null
+
+    /** Restores toolkit state from an encrypted backup, validating its keys before resealing. */
+    @Synchronized
+    fun importState(json: JSONObject) {
+        val appKey = json.optString("app_key")
+        if (appKey.isNotEmpty()) pkcs8(Base64.decode(appKey, Base64.NO_WRAP))
+        json.optJSONObject("pairs")?.let { pairs ->
+            for (serial in pairs.keys()) {
+                val o = pairs.optJSONObject(serial) ?: continue
+                pkcs8(Base64.decode(o.getString("authority"), Base64.NO_WRAP))
+            }
+        }
+        write(json)
+    }
+
     private fun read(): JSONObject =
         if (file.exists()) JSONObject(sealer.unseal(file.readBytes()).decodeToString()) else JSONObject()
 

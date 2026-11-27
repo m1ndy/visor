@@ -293,7 +293,7 @@ fun SettingsScreen(open: (NavKey) -> Unit, model: SettingsViewModel = hiltViewMo
                         NavRow(
                             VisorIcons.Archive, stringResource(R.string.backup_title),
                             last?.let { stringResource(R.string.backup_sum_last, dateWords(it)) } ?: stringResource(R.string.backup_sum_never),
-                            onClick = { open(BackupKey) },
+                            onClick = { open(BackupKey()) },
                         )
                         val newer by model.updates.newer.collectAsStateWithLifecycle()
                         val version = BuildConfig.VERSION_NAME
@@ -777,7 +777,7 @@ private fun pageHits(product: Int?): List<Triple<Int, Int?, NavKey>> =
             Triple(R.string.glasses_title, R.string.search_words_glasses, GlassesKey),
             Triple(R.string.apps_title, R.string.search_words_apps, AppsKey),
             Triple(R.string.advanced_title, R.string.search_words_advanced, AdvancedKey),
-            Triple(R.string.backup_title, R.string.search_words_backup, BackupKey),
+            Triple(R.string.backup_title, R.string.search_words_backup, BackupKey()),
             Triple(R.string.about_title, R.string.search_words_about, AboutKey),
             Triple(R.string.notify_apps_title, R.string.search_words_notify_apps, NotifyAppsKey),
             Triple(R.string.settings_flags, R.string.search_words_flags, FlagsKey),

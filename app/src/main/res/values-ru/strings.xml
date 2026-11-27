@@ -401,7 +401,7 @@
     <string name="search_words_hearing">conversation focus,focus,hearing correction,hearing aid,group conversation,слух,разговор,фокус</string>
     <string name="search_words_memories">memor,remember,памят</string>
     <string name="search_words_mcp">mcp,integra,tool,connector,server,инструмент,сервер,интеграц</string>
-    <string name="search_words_backup">export,import,restore,экспорт,импорт,восстанов</string>
+    <string name="search_words_backup">export,import,restore,экспорт,импорт,восстанов,ключи,шифр,пароль</string>
     <string name="search_words_flags">flag,mobileconfig,gate,флаг</string>
     <string name="search_words_diagnostics">diagnos,link,verdict,диагност,связь</string>
     <string name="search_words_event_log">log,events,журнал,событи</string>
@@ -849,9 +849,42 @@
         <item quantity="other">Не восстановлено %1$d настройки очков</item>
     </plurals>
     <string name="backup_visor_only">Только Visor</string>
+    <string name="backup_encrypted">Зашифровано</string>
+    <string name="backup_include_keys">Включить ключи и аккаунты</string>
+    <string name="backup_include_keys_off">Выключено по умолчанию. Без ключей очков, входов, API-ключей и токенов.</string>
+    <string name="backup_include_keys_on">Шифруется парольной фразой. Включает ключи очков, входы, API-ключи и токены.</string>
+    <string name="backup_keys_warning_inline">Любой, у кого есть этот файл и парольная фраза, получит доступ к очкам, аккаунту Meta и API-ключам.</string>
+    <string name="backup_keys_warn_title">Включить ключи и аккаунты?</string>
+    <string name="backup_keys_warn_intro">Копия будет зашифрована выбранной вами парольной фразой и будет содержать:</string>
+    <string name="backup_keys_warn_items">• Приватные ключи очков, Neural Band и toolkit\n• Сессию входа в Meta\n• API-ключи ИИ-провайдеров, облачного голоса и вход ChatGPT\n• Учётные данные и OAuth-токены MCP-интеграций\n• Ключ RTMP-потока, учётные данные Spotify и токены разработчика / VDK</string>
+    <string name="backup_keys_warn_risk">Любой, у кого есть файл и парольная фраза, сможет управлять очками и использовать эти аккаунты. Храните файл бережно и удалите его после переноса на другой телефон.</string>
+    <string name="backup_keys_warn_confirm">Включить ключи</string>
+    <string name="backup_encrypt_title">Зашифровать копию</string>
+    <string name="backup_encrypt_text">Придумайте парольную фразу для защиты копии. Она понадобится при восстановлении и не подлежит восстановлению.</string>
+    <string name="backup_passphrase_hint">Парольная фраза (не менее %1$d символов)</string>
+    <string name="backup_passphrase_confirm_hint">Повторите парольную фразу</string>
+    <string name="backup_passphrase_short">Введите не менее %1$d символов</string>
+    <string name="backup_passphrase_mismatch">Парольные фразы не совпадают</string>
+    <string name="backup_show_passphrase">Показать парольную фразу</string>
+    <string name="backup_hide_passphrase">Скрыть парольную фразу</string>
+    <string name="backup_decrypt_title">Зашифрованная копия</string>
+    <string name="backup_decrypt_text">Введите парольную фразу, чтобы открыть эту копию.</string>
+    <string name="backup_decrypt_text_dated">Сохранено %1$s. Введите парольную фразу, чтобы открыть копию.</string>
+    <string name="backup_passphrase_enter_hint">Парольная фраза</string>
+    <string name="backup_unlock">Открыть</string>
+    <string name="backup_wrong_passphrase">Неверная парольная фраза или повреждённый файл</string>
+    <string name="backup_restored_with_keys">Восстановлено с ключами и аккаунтами</string>
+    <string name="backup_restored_pair_hint">Ключи восстановлены. Выполните сопряжение очков в настройках Bluetooth Android, чтобы подключиться без сброса.</string>
     <string name="backup_restore_title">Восстановить копию от %1$s?</string>
     <string name="backup_restore_text">Настройки Visor и настройки на очках (%1$d).</string>
     <string name="backup_restore_away">Только настройки Visor. Подключите очки и восстановите копию ещё раз, чтобы вернуть их настройки (%1$d).</string>
+    <string name="backup_restore_keys_only">Будут восстановлены настройки Visor, сохранённые входы, API-ключи и токены.</string>
+    <plurals name="backup_restore_keys_pairs">
+        <item quantity="one">Будут восстановлены настройки Visor, ключи для %1$d пары очков, входы, API-ключи и токены.</item>
+        <item quantity="few">Будут восстановлены настройки Visor, ключи для %1$d пар очков, входы, API-ключи и токены.</item>
+        <item quantity="many">Будут восстановлены настройки Visor, ключи для %1$d пар очков, входы, API-ключи и токены.</item>
+        <item quantity="other">Будут восстановлены настройки Visor, ключи для %1$d пар очков, входы, API-ключи и токены.</item>
+    </plurals>
 
     <string name="about_title">О приложении</string>
     <string name="about_debug">Отладочная сборка</string>
@@ -879,6 +912,7 @@
 
     <!-- Onboarding -->
     <string name="onboard_begin">Начать</string>
+    <string name="onboard_restore">Восстановить из резервной копии</string>
     <string name="onboard_access_title">Что запрашивает Visor</string>
     <string name="onboard_skip">Не сейчас</string>
     <string name="onboard_continue">Продолжить</string>
